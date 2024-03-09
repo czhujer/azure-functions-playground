@@ -74,14 +74,14 @@ afc-setup:
 
 # Azure Container Apps
 #
-.phony: deploy-acr
-deploy-acr:
+.phony: aca-deploy
+aca-deploy:
 	az \
 		deployment \
 		group \
 		create \
 		--resource-group test1 --template-file exampleACA/bicep/main.bicep \
-		--parameters acrName=packetapmtest1
+		--parameters acrName=packetapmtest1 acaName=pmtest1
 
 
 .phony: aca-build-local
@@ -89,6 +89,7 @@ aca-build-local:
 	docker \
 		build \
 		--tag packetapmtest1.azurecr.io/azure-functions-aca-example1:latest \
+		--platform linux/amd64 \
 		exampleACA/.
 
 .phony: aca-push-to-acr
