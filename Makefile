@@ -10,8 +10,10 @@ create-rg:
 		create \
 		--name pm0functions0playground1 --location westeurope --resource-group test1 --sku Standard_LRS --allow-blob-public-access false
 
-.PHONY: create-af
-create-af:
+# basic setup
+#
+.PHONY: af-create
+af-create:
 	az \
 		functionapp \
 		create \
@@ -24,21 +26,22 @@ create-af:
 		--storage-account pm0functions0playground1 
 
 
-.PHONY: afp
-afp:
+.PHONY: af-publish
+af-publish:
 	cd httpExample && \
 	func \
 		azure \
 		functionapp \
 		publish pm-playground1
 
-.PHONY: test1
-test1:
+.PHONY: af-test
+af-test:
 	curl https://pm-playground1.azurewebsites.net/api/HttpExample?name=Functions -v
 
-
-.PHONY: afc
-afc:
+# container
+#
+.PHONY: afc-create
+afc-create:
 	az \
 		functionapp \
 		create \
@@ -50,8 +53,8 @@ afc:
 		--registry-username <USERNAME> \
 		--registry-password <SECURE_PASSWORD>
 
-.PHONY: afcsetup
-afcsetup:
+.PHONY: afc-setup
+afc-setup:
 	az \
 		storage \
 		account \
@@ -69,3 +72,40 @@ afcsetup:
 		--resource-group AzureFunctionsContainers-rg \
 		--settings AzureWebJobsStorage=<CONNECTION_STRING>
 
+# Azure Container Apps
+#
+.phony: deploy-acr
+deploy-acr:
+	az \
+		deployment \
+		group \
+		create \
+		--resource-group test1 --template-file exampleACA/bicep/main.bicep \
+		--parameters acrName=packetapmtest1
+
+
+.phony: aca-build-local
+aca-build-local:
+	docker \
+		build \
+		--tag packetapmtest1.azurecr.io/azure-functions-aca-example1:latest \
+		exampleACA/.
+
+.phony: aca-push-to-acr
+aca-push-to-acr:
+	az \
+		acr \
+		login \
+		-n packetapmtest1.azurecr.io
+	docker \
+		push \
+		packetapmtest1.azurecr.io/azure-functions-aca-example1:latest 
+
+.phony: aca-run-local
+aca-run-local:
+	docker \
+		run \
+		-p 8080:80 \
+		-it \
+		--rm \
+		azure-functions-aca-example1:v1.0.0
