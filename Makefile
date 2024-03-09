@@ -26,10 +26,11 @@ create-af:
 
 .PHONY: afp
 afp:
+	cd httpExample && \
 	func \
-	azure \
-	functionapp \
-	publish pm-playground1
+		azure \
+		functionapp \
+		publish pm-playground1
 
 .PHONY: test1
 test1:
