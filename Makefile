@@ -35,3 +35,37 @@ afp:
 .PHONY: test1
 test1:
 	curl https://pm-playground1.azurewebsites.net/api/HttpExample?name=Functions -v
+
+
+.PHONY: afc
+afc:
+	az \
+		functionapp \
+		create \
+		--name <APP_NAME> \
+		--storage-account <STORAGE_NAME> \
+		--resource-group AzureFunctionsContainers-rg \
+		--plan myPremiumPlan \
+		--image <LOGIN_SERVER>/azurefunctionsimage:v1.0.0 \
+		--registry-username <USERNAME> \
+		--registry-password <SECURE_PASSWORD>
+
+.PHONY: afcsetup
+afcsetup:
+	az \
+		storage \
+		account \
+		show-connection-string \
+		--resource-group AzureFunctionsContainers-rg \
+		--name <STORAGE_NAME> \
+		--query connectionString \
+		--output tsv
+	az \
+		functionapp \
+		config \
+		appsettings \
+		set \
+		--name <APP_NAME> \
+		--resource-group AzureFunctionsContainers-rg \
+		--settings AzureWebJobsStorage=<CONNECTION_STRING>
+
