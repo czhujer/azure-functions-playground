@@ -23,3 +23,14 @@ create-af:
 		--name pm-playground1 \
 		--storage-account pm0functions0playground1 
 
+
+.PHONY: afp
+afp:
+	func \
+	azure \
+	functionapp \
+	publish pm-playground1
+
+.PHONY: test1
+test1:
+	curl https://pm-playground1.azurewebsites.net/api/HttpExample?name=Functions -v
