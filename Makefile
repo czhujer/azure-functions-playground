@@ -119,6 +119,11 @@ aca-run-local:
 		--rm \
 		azure-functions-aca-example1:v1.0.0
 
+## Azure Container Apps - Python
+.phony: acapy-test
+acapy-test:
+	curl http://localhost:7071/api/orchestrators/hello_orchestrator |jq .
+
 # Azure functions on Azure Container Apps
 #
 .phony: afaca-deploy

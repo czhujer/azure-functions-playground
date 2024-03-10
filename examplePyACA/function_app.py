@@ -6,5 +6,4 @@ from http_example_dr_blueprint import he_dr_bp
 app = df.DFApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 
 app.register_functions(bp_he)
-# TODO: fix this
-# app.register_functions(he_dr_bp)
+app.register_functions(he_dr_bp)
