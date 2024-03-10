@@ -1,6 +1,10 @@
 import azure.functions as func
-from http_example_blueprint import bphe
+import azure.durable_functions as df
+from http_example_blueprint import bp_he
+from http_example_dr_blueprint import he_dr_bp
 
-app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
+app = df.DFApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 
-app.register_functions(bphe)
+app.register_functions(bp_he)
+# TODO: fix this
+# app.register_functions(he_dr_bp)
