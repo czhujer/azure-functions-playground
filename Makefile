@@ -133,3 +133,14 @@ afaca-deploy:
 		--name azureFuncionsOnAzureContainerApps \
 		--resource-group pm-test2 --template-file exampleAFonACA/bicep/az-on-aca.bicep \
 		--parameters resourceNamePrefix=azonacatest2
+
+.phony: afaca-delete
+afaca-delete:
+	az \
+		stack \
+		group \
+		delete \
+		--delete-resources \
+		--yes \
+		--name azureFuncionsOnAzureContainerApps \
+		--resource-group pm-test2
