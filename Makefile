@@ -2,8 +2,8 @@
 set-su:
 	az account set --name IAM-APIM-Workshop-Playground
 
-.PHONY: create-rg
-create-rg:
+.PHONY: create-sa
+create-sa:
 	az \
 		storage \
 		account \
