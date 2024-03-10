@@ -72,9 +72,6 @@ afc-setup:
 		--resource-group AzureFunctionsContainers-rg \
 		--settings AzureWebJobsStorage=<CONNECTION_STRING>
 
-# Azure functions on Azure Container Apps
-#
-
 ## Azure Container Apps
 .phony: aca-deploy
 aca-deploy:
@@ -121,3 +118,18 @@ aca-run-local:
 		-it \
 		--rm \
 		azure-functions-aca-example1:v1.0.0
+
+# Azure functions on Azure Container Apps
+#
+.phony: afaca-deploy
+afaca-deploy:
+	az \
+		stack \
+		group \
+		create \
+		--deny-settings-mode 'none' \
+		--delete-resources \
+		--yes \
+		--name azureFuncionsOnAzureContainerApps \
+		--resource-group pm-test2 --template-file exampleAFonACA/bicep/az-on-aca.bicep \
+		--parameters resourceNamePrefix=azonacatest2
