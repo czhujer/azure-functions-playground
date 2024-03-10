@@ -72,17 +72,28 @@ afc-setup:
 		--resource-group AzureFunctionsContainers-rg \
 		--settings AzureWebJobsStorage=<CONNECTION_STRING>
 
-# Azure Container Apps
+# Azure functions on Azure Container Apps
 #
+
+## Azure Container Apps
 .phony: aca-deploy
 aca-deploy:
 	az \
 		deployment \
 		group \
 		create \
+		--name pm-test1-aca \
 		--resource-group test1 --template-file exampleACA/bicep/main.bicep \
 		--parameters acrName=packetapmtest1 acaName=pmtest1
 
+.phony: aca-remove
+aca-remove:
+	az \
+		deployment \
+		group \
+		delete \
+		--name pm-test1-aca \
+		--resource-group test1
 
 .phony: aca-build-local
 aca-build-local:
