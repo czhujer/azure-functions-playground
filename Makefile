@@ -119,7 +119,21 @@ aca-run-local:
 		--rm \
 		azure-functions-aca-example1:v1.0.0
 
-## Azure Container Apps - Python
+## AF on ACAzure Container Apps - Python
+.phony: acapy-deploy
+acapy-deploy:
+	az \
+		stack \
+		group \
+		create \
+		--deny-settings-mode 'none' \
+		--delete-resources \
+		--yes \
+		--name azOnAcaPy \
+		--resource-group pm-test2 --template-file examplePyACA/bicep/az-on-aca.bicep \
+		--parameters resourceNamePrefix=azOnAcaPy
+
+
 .phony: acapy-test
 acapy-test:
 	curl http://localhost:7071/api/orchestrators/hello_orchestrator |jq .
